@@ -50,6 +50,8 @@ coverage.xml
 *.mo
 *.pot
 .env
+.envs/
+
 # Django stuff:
 staticfiles/
 
