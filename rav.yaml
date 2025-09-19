@@ -1,0 +1,13 @@
+name: "ifidel"
+
+scripts:
+  celery: celery -A conf worker --loglevel=INFO --concurrency=5 -n worker1@%h
+  beat: celery -A conf beat --loglevel=INFO
+  flower: celery -A conf flower
+  db:
+    - python manage.py makemigrations
+    - python manage.py migrate
+  pytest: coverage run -m pytest && coverage report
+  c-html: coverage html
+  serve_auth: python manage.py runserver 8000
+

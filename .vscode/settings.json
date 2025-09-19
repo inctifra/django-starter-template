@@ -11,9 +11,13 @@
         "fullhash",
         "htmlcov",
         "ifidel",
+        "loglevel",
         "mailpit",
+        "makemigrations",
         "nosetests",
         "pixrem",
+        "pytest",
+        "runserver",
         "SOCIALACCOUNT",
         "staticfiles",
         "webpackbar"
