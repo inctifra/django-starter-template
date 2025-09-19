@@ -3,6 +3,7 @@ const BundleTracker = require("webpack-bundle-tracker");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackBar = require("webpackbar");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { ProvidePlugin } = require("webpack");
 
 module.exports = {
   target: "web",
@@ -28,6 +29,10 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
+          from: path.resolve(__dirname, "../ifidel/static/images/favicons"),
+          to: "images/favicons",
+        },
+        {
           from: path.resolve(__dirname, "../ifidel/static/src/student/images"),
           to: "images/student",
         },
@@ -37,6 +42,12 @@ module.exports = {
         },
       ],
     }),
+    new Dotenv({ path: path.resolve(__dirname, "../.env") }), // load .env
+    new ProvidePlugin({
+    $: "jquery",
+    jQuery: "jquery",
+    axios: "axios",
+  }),
   ],
   module: {
     rules: [
@@ -79,15 +90,21 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: ["node_modules"],
-    extensions: [".js", ".jsx", ".ts"],
+    modules: ["node_modules", path.resolve(__dirname, "../ifidel/static/src")],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: {
-      "@student": path.resolve(
-        __dirname,
-        "../ifidel/static/src/student/images"
-      ),
-      "@tutor": path.resolve(__dirname, "../ifidel/static/src/tutor/images"),
-      "@core": path.resolve(__dirname, "../ifidel/static/src/core/images"),
+      "@": path.resolve(__dirname, "../ifidel/static/src"),
+      "@student": path.resolve(__dirname, "../ifidel/static/src/student"),
+      "@tutor": path.resolve(__dirname, "../ifidel/static/src/tutor"),
+      "@core": path.resolve(__dirname, "../ifidel/static/src/core"),
+    },
+  },
+  devServer: {
+    proxy: {
+      "/api": {
+        target: process.env.BACKEND_URL, // 👈 use env var here
+        changeOrigin: true,
+      },
     },
   },
 };

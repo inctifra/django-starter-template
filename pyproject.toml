@@ -73,6 +73,7 @@ dependencies = [
     "django-coverage-plugin==3.1.1",
     "pytest-django==4.11.1",
     "django-browser-reload>=1.20.0",
+    "pyjwt>=2.10.1",
 ]
 
 # ==== pytest ====
@@ -212,3 +213,8 @@ extend-unsafe-fixes = [
 
 [tool.ruff.lint.isort]
 force-single-line = true
+
+[dependency-groups]
+dev = [
+    "rav>=0.1.1",
+]

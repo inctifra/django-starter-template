@@ -45,4 +45,19 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
                 user.name = first_name
                 if last_name := data.get("last_name"):
                     user.name += f" {last_name}"
+        if not getattr(user.profile, "avatar", None):
+            provider = sociallogin.account.provider
+            extra_data = sociallogin.account.extra_data
+            avatar_url = None
+            match provider:
+                case "google":
+                    avatar_url = extra_data.get("picture")
+                case "facebook":
+                    avatar_url = f"https://graph.facebook.com/{extra_data.get('id')}/picture?type=large"
+                case "github":
+                    avatar_url = extra_data.get("avatar_url")
+                case "twitter":
+                    avatar_url = extra_data.get("profile_image_url_https")
+            if avatar_url:
+                user.profile.avatar = avatar_url
         return user

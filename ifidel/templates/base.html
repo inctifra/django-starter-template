@@ -1,6 +1,7 @@
 
 {% load static i18n %}
     {% load render_bundle from webpack_loader %}
+    {% load webpack_static from webpack_loader %}
 
   <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
@@ -18,7 +19,7 @@
         content="lms system" />
   <meta name="author"
         content="kwasa" />
-  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
+  <link rel="icon" href="{% webpack_static 'images/favicons/favicon.ico' %}" />
   {% block css %}
 <!-- Your stuff: Third-party CSS libraries go here -->
 <!-- This file stores project-specific CSS -->

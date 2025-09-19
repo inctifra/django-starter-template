@@ -12,7 +12,7 @@ from .base import DATABASES
 from .base import INSTALLED_APPS
 from .base import REDIS_URL
 from .base import SPECTACULAR_SETTINGS
-from .base import env, DEBUG
+from .base import env, DEBUG, Path, APPS_DIR
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -81,18 +81,30 @@ aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws
 # STATIC & MEDIA
 # ------------------------
 STORAGES = {
-    "default": {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+if DEBUG:
+    # Local development
+    STORAGES["default"] = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+            "location": Path(APPS_DIR / "media"),
+        },
+    }
+    MEDIA_URL = "/media/"
+else:
+    # Production (AWS S3)
+    STORAGES["default"] = {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
             "location": "media",
             "file_overwrite": False,
         },
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-MEDIA_URL = f"https://{aws_s3_domain}/media/"
+    }
+    MEDIA_URL = f"https://{aws_s3_domain}/media/"
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -166,13 +178,14 @@ sentry_sdk.init(
     integrations=integrations,
     environment=env("SENTRY_ENVIRONMENT", default="production"),
     traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0),
+    send_default_pii=True,
 )
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # Tools that generate code samples can use SERVERS to point to the correct domain
 SPECTACULAR_SETTINGS["SERVERS"] = [
-    {"url": "https://localhost:8000/api/", "description": "Production server"},
+    {"url": "https://ifidel.albinismnetwork.org/api", "description": "Production server"},
 ]
 # Your stuff...
 # ------------------------------------------------------------------------------
