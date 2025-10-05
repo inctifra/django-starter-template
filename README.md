@@ -1,110 +1,148 @@
-# ifidel
+# Django Starter Template
 
-lms system
-
-[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 License: Apache Software License 2.0
 
-## Settings
+---
 
-Moved to [settings](https://cookiecutter-django.readthedocs.io/en/latest/1-getting-started/settings.html).
+## 🚀 Quick Start
 
-## Basic Commands
+Once you have cloned the repository, you can set up and run both the backend (Django) and frontend (Webpack + pnpm) with the following simple steps.
 
-### Setting Up Your Users
+### 1. Sync Python environment
 
-- To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+```bash
+uv sync
+```
 
-- To create a **superuser account**, use this command:
+### 2. Install frontend dependencies
 
-      $ python manage.py createsuperuser
+```bash
+pnpm install
+```
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+### 3. Run development servers
 
-### Type checks
+* Start the **frontend** development server:
 
-Running type checks with mypy:
+  ```bash
+  pnpm dev
+  ```
 
-    $ mypy ifidel
+* In another terminal, start the **Django backend**:
 
-### Test coverage
+  ```bash
+  python manage.py runserver
+  ```
 
-To run the tests, check your test coverage, and generate an HTML coverage report:
+### 4. Production build
 
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
+To build frontend assets for production:
 
-#### Running tests with pytest
+```bash
+pnpm build
+```
 
-    $ pytest
+---
 
-### Live reloading and Sass CSS compilation
+## ⚙️ Settings
 
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/2-local-development/developing-locally.html#using-webpack-or-gulp).
+See [settings documentation](https://cookiecutter-django.readthedocs.io/en/latest/1-getting-started/settings.html).
 
-### Celery
+---
 
-This app comes with Celery.
+## 👥 User Setup
 
-To run a celery worker:
+* To create a **normal user account**, register through the Sign Up page. Check your console for the email verification link.
+
+* To create a **superuser account**:
+
+  ```bash
+  python manage.py createsuperuser
+  ```
+
+---
+
+## ✅ Type Checks
+
+Run static type checks using **mypy**:
+
+```bash
+mypy ifidel
+```
+
+---
+
+## 🧪 Testing
+
+Run all tests and view coverage report:
+
+```bash
+coverage run -m pytest
+coverage html
+open htmlcov/index.html
+```
+
+or simply:
+
+```bash
+pytest
+```
+
+---
+
+## 🔄 Celery Setup
+
+Run a Celery worker:
 
 ```bash
 cd ifidel
 celery -A config.celery_app worker -l info
 ```
 
-Please note: For Celery's import magic to work, it is important _where_ the celery commands are run. If you are in the same folder with _manage.py_, you should be right.
-
-To run [periodic tasks](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html), you'll need to start the celery beat scheduler service. You can start it as a standalone process:
+For periodic tasks:
 
 ```bash
 cd ifidel
 celery -A config.celery_app beat
 ```
 
-or you can embed the beat service inside a worker with the `-B` option (not recommended for production use):
+or combined (for local testing only):
 
 ```bash
-cd ifidel
 celery -A config.celery_app worker -B -l info
 ```
 
-### Email Server
+---
 
-In development, it is often nice to be able to see emails that are being sent from your application. For that reason local SMTP server [Mailpit](https://github.com/axllent/mailpit) with a web interface is available as docker container.
+## 📧 Email Server (Development)
 
-Container mailpit will start automatically when you will run all docker containers.
-Please check [cookiecutter-django Docker documentation](https://cookiecutter-django.readthedocs.io/en/latest/2-local-development/developing-locally-docker.html) for more details how to start all containers.
+Local SMTP server [Mailpit](https://github.com/axllent/mailpit) is preconfigured via Docker. Access the mail UI at:
 
-With Mailpit running, to view messages that are sent by your application, open your browser and go to `http://127.0.0.1:8025`
+```
+http://127.0.0.1:8025
+```
 
-### Sentry
+---
 
-Sentry is an error logging aggregator service. You can sign up for a free account at <https://sentry.io/signup/?code=cookiecutter> or download and host it yourself.
-The system is set up with reasonable defaults, including 404 logging and integration with the WSGI application.
+## 🪲 Error Logging (Sentry)
 
-You must set the DSN url in production.
+To enable Sentry, set the DSN URL in your production environment variables.
 
-## Deployment
+---
 
-The following details how to deploy this application.
+## 🚢 Deployment Options
 
 ### Heroku
 
-See detailed [cookiecutter-django Heroku documentation](https://cookiecutter-django.readthedocs.io/en/latest/3-deployment/deployment-on-heroku.html).
+Refer to the [Cookiecutter Django Heroku guide](https://cookiecutter-django.readthedocs.io/en/latest/3-deployment/deployment-on-heroku.html).
 
 ### Docker
 
-See detailed [cookiecutter-django Docker documentation](https://cookiecutter-django.readthedocs.io/en/latest/3-deployment/deployment-with-docker.html).
+Refer to the [Docker deployment guide](https://cookiecutter-django.readthedocs.io/en/latest/3-deployment/deployment-with-docker.html).
 
-### Custom Bootstrap Compilation
+---
 
-The generated CSS is set up with automatic Bootstrap recompilation with variables of your choice.
-Bootstrap v5 is installed using npm and customised by tweaking your variables in `static/sass/custom_bootstrap_vars`.
+## 🎨 Custom Bootstrap Compilation
 
-You can find a list of available variables [in the bootstrap source](https://github.com/twbs/bootstrap/blob/v5.1.3/scss/_variables.scss), or get explanations on them in the [Bootstrap docs](https://getbootstrap.com/docs/5.1/customize/sass/).
-
-Bootstrap's javascript as well as its dependencies are concatenated into a single file: `static/js/vendors.js`.
+You can customize Bootstrap by editing variables in `static/sass/custom_bootstrap_vars`. CSS will automatically rebuild via Webpack when running `pnpm dev` or `pnpm build`.

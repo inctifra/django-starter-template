@@ -12,7 +12,7 @@ from .base import DATABASES
 from .base import INSTALLED_APPS
 from .base import REDIS_URL
 from .base import SPECTACULAR_SETTINGS
-from .base import env, DEBUG, Path, APPS_DIR
+from .base import env, DEBUG, Path, APPS_DIR, APP_NAME
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -111,14 +111,14 @@ else:
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL",
-    default="ifidel <noreply@localhost>",
+    default=f"{APP_NAME} <noreply@localhost>",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
 SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env(
     "DJANGO_EMAIL_SUBJECT_PREFIX",
-    default="[ifidel] ",
+    default=f"[{APP_NAME}] ",
 )
 ACCOUNT_EMAIL_SUBJECT_PREFIX = EMAIL_SUBJECT_PREFIX
 

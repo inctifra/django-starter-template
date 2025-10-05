@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # ifidel/
 APPS_DIR = BASE_DIR / "ifidel"
 env = environ.Env()
-
+APP_NAME = env.str("APP_NAME", default="Ifidel")
 
 # OS environment variables take precedence over variables from .env
 env.read_env(str(BASE_DIR / ".env"))
@@ -179,7 +179,7 @@ TEMPLATES = [
         # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # https://docs.djangoproject.com/en/dev/ref/settings/#dirs
-        "DIRS": [str(APPS_DIR / "templates")],
+        "DIRS": [str(BASE_DIR / "templates")],
         # https://docs.djangoproject.com/en/dev/ref/settings/#app-dirs
         "APP_DIRS": True,
         "OPTIONS": {
@@ -374,8 +374,8 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # By Default swagger ui is available only to admin user(s). You can change permission classes to change that
 # See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
 SPECTACULAR_SETTINGS = {
-    "TITLE": "ifidel API",
-    "DESCRIPTION": "Documentation of API endpoints of ifidel",
+    "TITLE": f"{APP_NAME} API",
+    "DESCRIPTION": f"Documentation of API endpoints of {APP_NAME}",
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
     "SCHEMA_PATH_PREFIX": "/api/",

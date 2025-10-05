@@ -1,6 +1,5 @@
 import axios from "axios";
 import $ from "jquery";
-import "dotenv/config";
 
 // Helper to read CSRF cookie from Django
 function getCookie(name: string) {
@@ -19,7 +18,7 @@ function getCookie(name: string) {
 }
 
 const axiosClient = axios.create({
-  baseURL: process.env.BASE_URL || "http://localhost:8000/api",
+  baseURL: "/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

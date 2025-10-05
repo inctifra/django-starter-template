@@ -4,13 +4,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackBar = require("webpackbar");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { ProvidePlugin } = require("webpack");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   target: "web",
   context: path.join(__dirname, "../"),
   entry: {
-    project: path.resolve(__dirname, "../ifidel/static/js/project"),
-    vendors: path.resolve(__dirname, "../ifidel/static/js/vendors"),
+    project: path.resolve(__dirname, "../static/js/project"),
+    vendors: path.resolve(__dirname, "../static/js/vendors"),
   },
   output: {
     path: path.resolve(__dirname, "../assets/webpack_bundles/"),
@@ -29,16 +30,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "../ifidel/static/images/favicons"),
+          from: path.resolve(__dirname, "../static/images/favicons"),
           to: "images/favicons",
-        },
-        {
-          from: path.resolve(__dirname, "../ifidel/static/src/student/images"),
-          to: "images/student",
-        },
-        {
-          from: path.resolve(__dirname, "../ifidel/static/src/tutor/images"),
-          to: "images/tutor",
         },
       ],
     }),
@@ -90,13 +83,11 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: ["node_modules", path.resolve(__dirname, "../ifidel/static/src")],
+    modules: ["node_modules", path.resolve(__dirname, "../static/src")],
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: {
-      "@": path.resolve(__dirname, "../ifidel/static/src"),
-      "@student": path.resolve(__dirname, "../ifidel/static/src/student"),
-      "@tutor": path.resolve(__dirname, "../ifidel/static/src/tutor"),
-      "@core": path.resolve(__dirname, "../ifidel/static/src/core"),
+      "@": path.resolve(__dirname, "../static/src"),
+      "@images": path.resolve(__dirname, "../static/images"),
     },
   },
   devServer: {
