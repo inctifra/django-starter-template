@@ -13,14 +13,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "baseUrl": ".", 
-"paths": {
-  "@/*": ["ifidel/static/src/*"],
-  "@student/*": ["ifidel/static/src/student/*"],
-  "@tutor/*": ["ifidel/static/src/tutor/*"],
-  "@core/*": ["ifidel/static/src/core/*"]
-}
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["static/src/*"]
+    }
   },
-  "include": ["ifidel/static/src/**/*"],
+  "include": ["static/src/**/*"],
   "exclude": ["node_modules", "assets", "dist"]
 }

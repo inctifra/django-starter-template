@@ -1,7 +1,7 @@
 [project]
-name = "ifidel"
+name = "presspulse"
 version = "0.1.0"
-description = "ifidel"
+description = "presspulse"
 authors = [
     { name = "kwasa", email = "kwasa@localhost" }
 ]
@@ -10,7 +10,7 @@ maintainers = [
 ]
 keywords = [
     "django",
-    "ifidel",
+    "presspulse",
 ]
 license = { file = "LICENSE" }
 readme = { file = "README.md" }

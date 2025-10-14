@@ -35,7 +35,7 @@ module.exports = {
         },
       ],
     }),
-    new Dotenv({ path: path.resolve(__dirname, "../.env") }), // load .env
+    new Dotenv({ path: path.resolve(__dirname, "../.env") }), 
     new ProvidePlugin({
     $: "jquery",
     jQuery: "jquery",
@@ -44,9 +44,8 @@ module.exports = {
   ],
   module: {
     rules: [
-      // we pass the output from babel loader to react-hot loader
       {
-        test: /\.[jt]sx?$/, // handles both .js/.jsx and .ts/.tsx
+        test: /\.[jt]sx?$/,
         loader: "babel-loader",
         exclude: /node_modules/,
       },
@@ -93,7 +92,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: process.env.BACKEND_URL, // 👈 use env var here
+        target: process.env.BACKEND_URL,
         changeOrigin: true,
       },
     },
