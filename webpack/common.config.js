@@ -30,8 +30,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "../static/images/favicons"),
-          to: "images/favicons",
+          from: path.resolve(__dirname, "../static/images"),
+          to: "images",
         },
       ],
     }),
@@ -82,10 +82,9 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: ["node_modules", path.resolve(__dirname, "../static/src")],
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    modules: ["node_modules"],
+    extensions: [".js", ".jsx"],
     alias: {
-      "@": path.resolve(__dirname, "../static/src"),
       "@images": path.resolve(__dirname, "../static/images"),
     },
   },
