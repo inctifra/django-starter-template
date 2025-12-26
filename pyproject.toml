@@ -1,7 +1,7 @@
 [project]
-name = "presspulse"
+name = "fileshare"
 version = "0.1.0"
-description = "presspulse"
+description = "fileshare"
 authors = [
     { name = "kwasa", email = "kwasa@localhost" }
 ]
@@ -10,7 +10,7 @@ maintainers = [
 ]
 keywords = [
     "django",
-    "presspulse",
+    "fileshare",
 ]
 license = { file = "LICENSE" }
 readme = { file = "README.md" }
@@ -74,6 +74,7 @@ dependencies = [
     "pytest-django==4.11.1",
     "django-browser-reload>=1.20.0",
     "pyjwt>=2.10.1",
+    "djoser>=2.3.3",
 ]
 
 # ==== pytest ====
