@@ -49,7 +49,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True)
-    date_of_birth = models.DateField(blank=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     location = models.CharField(max_length=255, blank=True)
 
     # Useful tracking
