@@ -72,6 +72,8 @@ ENV/
 # Rope project settings
 .ropeproject
 
+guide.prompt.md
+
 # mkdocs documentation
 /site
 

@@ -23,6 +23,7 @@
     "pixrem",
     "pytest",
     "runserver",
+    "simplejwt",
     "SOCIALACCOUNT",
     "staticfiles",
     "webpackbar"
