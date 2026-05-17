@@ -1,5 +1,5 @@
 """
-ASGI config for ifidel project.
+ASGI config for mirako project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -15,9 +15,9 @@ from pathlib import Path
 from django.core.asgi import get_asgi_application
 
 # This allows easy placement of apps within the interior
-# ifidel directory.
+# mirako directory.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
-sys.path.append(str(BASE_DIR / "ifidel"))
+sys.path.append(str(BASE_DIR / "mirako"))
 sys.path.append(str(BASE_DIR / "apps"))
 
 # If DJANGO_SETTINGS_MODULE is unset, default to the local settings

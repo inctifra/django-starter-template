@@ -1,4 +1,3 @@
-# ruff: noqa: E501
 import logging
 
 import sentry_sdk
@@ -8,11 +7,14 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
 from .base import *  # noqa: F403
+from .base import APP_NAME
+from .base import APPS_DIR
 from .base import DATABASES
+from .base import DEBUG
 from .base import INSTALLED_APPS
 from .base import REDIS_URL
-from .base import SPECTACULAR_SETTINGS
-from .base import env, DEBUG, Path, APPS_DIR, APP_NAME
+from .base import Path
+from .base import env
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -27,17 +29,32 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
 
 # CACHES
 # ------------------------------------------------------------------------------
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": REDIS_URL,
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # Mimicking memcache behavior.
-            # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
-            "IGNORE_EXCEPTIONS": True,
-        },
+
+BACKEND_CACHE_DB_AVAILABLE = env.bool("BACKEND_CACHE_DB_AVAILABLE", default=True)
+
+DB_CACHE_ALIASES = {
+    "default": "default",
+    "offline": "offline_cache",
+}
+
+_OFFLINE_CACHE_BACKEND = {
+    "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+    "LOCATION": DB_CACHE_ALIASES["offline"],
+}
+
+_ONLINE_CACHE_BACKEND = {
+    "BACKEND": "django_redis.cache.RedisCache",
+    "LOCATION": REDIS_URL,
+    "OPTIONS": {
+        "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        "IGNORE_EXCEPTIONS": True,
     },
+}
+
+CACHES = {
+    "default": _ONLINE_CACHE_BACKEND
+    if BACKEND_CACHE_DB_AVAILABLE
+    else _OFFLINE_CACHE_BACKEND,
 }
 
 
@@ -46,6 +63,7 @@ CACHES = {
 if not DEBUG:
     try:
         from . import security as prod_security
+
         for attr in dir(prod_security):
             if attr.isupper():
                 globals()[attr] = getattr(prod_security, attr)
@@ -184,8 +202,6 @@ sentry_sdk.init(
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # Tools that generate code samples can use SERVERS to point to the correct domain
-SPECTACULAR_SETTINGS["SERVERS"] = [
-    {"url": "https://ifidel.albinismnetwork.org/api", "description": "Production server"},
-]
+# SPECTACULAR_SETTINGS["SERVERS"] = [ ]  # noqa: ERA001
 # Your stuff...
 # ------------------------------------------------------------------------------

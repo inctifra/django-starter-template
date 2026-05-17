@@ -6,9 +6,10 @@ from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from drf_spectacular.views import SpectacularAPIView
 from drf_spectacular.views import SpectacularSwaggerView
-from rest_framework.authtoken.views import obtain_auth_token
+
+from apps.apis.views import ScalarAPIView
+from config.api_schema import DynamicSpectacularAPIView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -19,7 +20,7 @@ urlpatterns = [
     ),
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path("users/", include("ifidel.users.urls", namespace="users")),
+    path("users/", include("mirako.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     # ...
@@ -30,18 +31,20 @@ urlpatterns = [
 # API URLS
 urlpatterns += [
     # API base url
-    path("api/", include("config.api_router")),
+    path(f"api/{settings.API_VERSION}/", include("config.api_router")),
     # DRF auth token
-    path("api/auth-token/", obtain_auth_token, name="obtain_auth_token"),
-    path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
+    path(
+        "api/schema/",
+        DynamicSpectacularAPIView.as_view(permission_classes=[], throttle_classes=[]),
+        name="api-schema",
+    ),
     path(
         "api/docs/",
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
-    path("api/auth/", include("djoser.urls")),
-    path("api/auth/", include("djoser.urls.authtoken")),
-    path("api/auth/", include("djoser.urls.jwt")),
+    path("api/docs/scalar/", ScalarAPIView.as_view(), name="scalar"),
+    path(f"api/{settings.API_VERSION}/auth/", include("bunifu_django_auth.urls")),
 ]
 
 if settings.DEBUG:
@@ -65,7 +68,8 @@ if settings.DEBUG:
         ),
         path("500/", default_views.server_error),
         path("__reload__/", include("django_browser_reload.urls")),
-    # Static file serving when using Gunicorn + Uvicorn for local web socket development
+        # Static file serving when using Gunicorn + Uvicorn for
+        # local web socket development
         *staticfiles_urlpatterns(),
     ]
     if "debug_toolbar" in settings.INSTALLED_APPS:
@@ -75,5 +79,3 @@ if settings.DEBUG:
             path("__debug__/", include(debug_toolbar.urls)),
             *urlpatterns,
         ]
-
-

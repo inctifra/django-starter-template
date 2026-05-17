@@ -1,4 +1,4 @@
-# Translations for the ifidel project
+# Translations for the mirako project
 # Copyright (C) 2025 kwasa
 # kwasa <kwasa@localhost>, 2025.
 #

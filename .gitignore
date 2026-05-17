@@ -273,11 +273,11 @@ tags
 dump.rdb
 
 ### Project template
-ifidel/media/
+mirako/media/
 
 .pytest_cache/
 .ipython/
-ifidel/static/webpack_bundles/
+mirako/static/webpack_bundles/
 webpack-stats.json
 .env
 .envs/*

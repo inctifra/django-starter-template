@@ -1,20 +1,18 @@
-# ruff: noqa: ERA001, E501
+# ruff: noqa: E501
 """Base settings to build other settings files upon."""
 
-from datetime import timedelta
 import ssl
+from datetime import timedelta
 from pathlib import Path
 
 import environ
 from django.utils.translation import gettext_lazy as _
 
-from config import settings
-
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# ifidel/
-APPS_DIR = BASE_DIR / "ifidel"
+# mirako/
+APPS_DIR = BASE_DIR / "mirako"
 env = environ.Env()
-APP_NAME = env.str("APP_NAME", default="Ifidel")
+APP_NAME = env.str("APP_NAME", default="mirako")
 
 # OS environment variables take precedence over variables from .env
 env.read_env(str(BASE_DIR / ".env"))
@@ -90,10 +88,13 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "webpack_loader",
     "django_browser_reload",
+    "django_filters",
+    "bunifu_django_auth",
 ]
 
 LOCAL_APPS = [
-    "ifidel.users",
+    "mirako.users",
+    "apps.apis",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -101,7 +102,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
-MIGRATION_MODULES = {"sites": "ifidel.contrib.sites.migrations"}
+MIGRATION_MODULES = {"sites": "mirako.contrib.sites.migrations"}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
@@ -198,7 +199,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "ifidel.users.context_processors.allauth_settings",
+                "mirako.users.context_processors.allauth_settings",
             ],
         },
     },
@@ -325,13 +326,13 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_ADAPTER = "ifidel.users.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "mirako.users.adapters.AccountAdapter"
 # https://docs.allauth.org/en/latest/account/forms.html
-ACCOUNT_FORMS = {"signup": "ifidel.users.forms.UserSignupForm"}
+ACCOUNT_FORMS = {"signup": "mirako.users.forms.UserSignupForm"}
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_ADAPTER = "ifidel.users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "mirako.users.adapters.SocialAccountAdapter"
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_FORMS = {"signup": "ifidel.users.forms.UserSocialSignupForm"}
+SOCIALACCOUNT_FORMS = {"signup": "mirako.users.forms.UserSocialSignupForm"}
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APPS": [
@@ -372,6 +373,24 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/day",
+        "user": "1000/day",
+        "search": "200/hour",
+    },
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
 }
 
 SIMPLE_JWT = {
@@ -383,6 +402,8 @@ SIMPLE_JWT = {
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
 
+API_VERSION = env.str("API_VERSION", default="v1")
+
 # By Default swagger ui is available only to admin user(s). You can change permission classes to change that
 # See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
 SPECTACULAR_SETTINGS = {
@@ -390,7 +411,8 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": f"Documentation of API endpoints of {APP_NAME}",
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
-    "SCHEMA_PATH_PREFIX": "/api/",
+    "SCHEMA_PATH_PREFIX": rf"/api/{API_VERSION}",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 # django-webpack-loader
 # ------------------------------------------------------------------------------

@@ -1,9 +1,9 @@
-.. ifidel documentation master file, created by
+.. mirako documentation master file, created by
    sphinx-quickstart.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ifidel's documentation!
+Welcome to mirako's documentation!
 ======================================================================
 
 .. toctree::

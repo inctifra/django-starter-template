@@ -10,7 +10,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=_source
 set BUILDDIR=_build
-set APP=..\ifidel
+set APP=..\mirako
 
 if "%1" == "" goto html
 

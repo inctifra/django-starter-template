@@ -1,4 +1,4 @@
-name: "ifidel"
+name: "mirako"
 
 scripts:
   celery: celery -A config.celery_app worker -l info --concurrency=5 -n worker1@%h

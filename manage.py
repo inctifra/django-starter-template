@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+
 import os
 import sys
 from pathlib import Path
@@ -19,9 +20,9 @@ def main():
         ) from exc
 
     # This allows easy placement of apps within the interior
-    # ifidel directory.
+    # mirako directory.
     current_path = Path(__file__).parent.resolve()
-    sys.path.append(str(current_path / "ifidel"))
+    sys.path.append(str(current_path / "mirako"))
     sys.path.append(str(current_path / "apps"))
 
     execute_from_command_line(sys.argv)
