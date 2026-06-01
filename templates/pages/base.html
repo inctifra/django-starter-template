@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="min-h-screen flex flex-col">
+    {% block main %}
+    <div class="hero min-h-screen">
+    <div class="hero-content text-center">
+        <div class="max-w-3xl">
+            <h1 class="text-6xl font-bold text-green-600">
+                Django Frontend Starter
+            </h1>
+
+            <p class="py-6 text-lg">
+                A modern frontend foundation powered by Webpack, Sass, Tailwind CSS v4, DaisyUI, Bootstrap 5, and Material Design UI.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-3">
+                <button class="btn btn-primary">DaisyUI</button>
+                <button class="btn btn-secondary">Tailwind CSS</button>
+                <button class="btn btn-accent">Bootstrap 5</button>
+                <mdui-button>Material UI</mdui-button>
+            </div>
+
+            <div class="alert alert-info mt-8">
+                <span>
+                    Need fewer frameworks? Simply remove or comment out the corresponding imports from your Sass and JavaScript entry files.
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock main %}
+</div>
+{% endblock body %}

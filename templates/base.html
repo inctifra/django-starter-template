@@ -5,7 +5,7 @@
 
   <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}" data-theme="corporate">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -26,6 +26,8 @@
 
 
 {% render_bundle 'project' 'css' %}
+{% render_bundle 'tailwind' 'css' %}
+{% render_bundle 'vendors' 'css' %}
 
 
 {% endblock css %}
@@ -43,6 +45,8 @@
 
 
 {% render_bundle 'project' 'js' attrs='defer' %}
+
+{% render_bundle 'tailwind' 'js' attrs="defer" %}
 
 
 {% endblock javascript %}
@@ -110,7 +114,7 @@
     {% endif %}
     {% block main %}
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+        <p class="text-4xl text-red-600">Use this document as a way to quick start any new project.</p>
       {% endblock content %}
     {% endblock main %}
 
