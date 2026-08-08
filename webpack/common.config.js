@@ -133,6 +133,7 @@ module.exports = {
 
     alias: {
       "@images": path.resolve(__dirname, "../static/images"),
+      "@fonts": path.resolve(__dirname, "../static/fonts"),
       "@js": path.resolve(__dirname, "../static/js"),
       "@scss": path.resolve(__dirname, "../static/scss"),
     },
