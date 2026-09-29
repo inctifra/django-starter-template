@@ -15,7 +15,6 @@ module.exports = {
 
   entry: {
     project: path.resolve(__dirname, "../static/js/project"),
-    tailwind: path.resolve(__dirname, "../static/js/tailwind"),
     vendors: path.resolve(__dirname, "../static/js/vendors"),
   },
 
